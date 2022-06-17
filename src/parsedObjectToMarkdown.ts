@@ -1,4 +1,38 @@
-import type { Page } from '@progfay/scrapbox-parser';
+import type { Node, Page } from '@progfay/scrapbox-parser';
+
+// TODO: nodesを読み下す
+const nodeToMarkdown = (node: Node): string => {
+  if (node.type === 'blank') {
+    return node.text;
+  }
+  if (node.type === 'code') {
+    return `\`${node.text}\``;
+  }
+  if (node.type === 'commandLine') {
+    return `\`${node.raw}\``;
+  }
+  if (node.type === 'decoration') {
+    const prefix = '';
+    const tags: string[] = [];
+    node.decos.forEach((deco) => {
+      if (deco[0] === '*') {
+        const decoLevel = parseInt(deco.substring(2), 10);
+        prefix.concat('#'.repeat(Math.max(6 - decoLevel + 1, 1)));
+        for (let i = 0; i < decoLevel - 6; i += 1) {
+          tags.push('strong');
+        }
+      } else if (deco === '-') {
+        tags.push('s');
+      } else if (deco === '_') {
+        tags.push('u');
+      } else if (deco === '/') {
+        tags.push('i');
+      }
+    });
+    return node.nodes.map((childNode) => nodeToMarkdown(childNode)).join('');
+  }
+  return '';
+};
 
 export const parsedObjectToMarkdown = (page: Page): string => {
   const lines = page.map((block) => {
@@ -20,10 +54,9 @@ export const parsedObjectToMarkdown = (page: Page): string => {
       ];
     }
     if (block.type === 'table') {
-      // TODO: nodesを読み下す
       const tableRows = block.cells.map((row) =>
         row.map((nodes) => {
-          `| ${nodes.map((node) => node).join(' | ')} |`;
+          `| ${nodes.map((node) => nodeToMarkdown(node)).join(' | ')} |`;
         })
       );
       if (block.indent === 0) {
@@ -36,12 +69,12 @@ export const parsedObjectToMarkdown = (page: Page): string => {
       ];
     }
     // block.type === 'line'
-    // TODO: nodesを読み下す
+    const text = block.nodes.map((node) => nodeToMarkdown(node));
     if (block.indent === 0) {
-      return block.nodes;
+      return text;
     }
     const indent = '  '.repeat(block.indent - 1);
-    return `${indent}- ${block.nodes}`;
+    return `${indent}- ${text}`;
   });
 
   return lines.join('\n');

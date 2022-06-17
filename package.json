@@ -1,0 +1,8 @@
+{
+  "name": "@hogashi/sb2md",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/hogashi/sb2md.git",
+  "author": "hogashi <azuma.ginkakuji@gmail.com>",
+  "license": "MIT"
+}

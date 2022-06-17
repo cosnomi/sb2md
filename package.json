@@ -5,6 +5,9 @@
   "repository": "ssh://git@github.com/hogashi/sb2md.git",
   "author": "hogashi <azuma.ginkakuji@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "esbuild --bundle --outdir=dist --platform=node src/index.ts"
+  },
   "dependencies": {
     "@progfay/scrapbox-parser": "^7.2.0"
   },

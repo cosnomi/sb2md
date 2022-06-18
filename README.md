@@ -19,7 +19,7 @@ $ cat input.txt
   いつも。つねづね。
   >「―ある所にはなくて」〈枕・二八〉
 $ cat input.txt | npx @hogashi/sb2md@latest
-# 例
+例
 [#意味](意味)
 
 [例（れい）の意味 - goo国語辞書](https://dictionary.goo.ne.jp/word/%E4%BE%8B_%28%E3%82%8C%E3%81%84%29/) から

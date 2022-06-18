@@ -1,6 +1,5 @@
 import type { Node, Page } from '@progfay/scrapbox-parser';
 
-// TODO: nodesを読み下す
 const nodeToMarkdown = (node: Node): string => {
   if (node.type === 'blank') {
     return node.text;
@@ -30,6 +29,50 @@ const nodeToMarkdown = (node: Node): string => {
       }
     });
     return node.nodes.map((childNode) => nodeToMarkdown(childNode)).join('');
+  }
+  if (node.type === 'formula') {
+    return `$ ${node.formula} $`;
+  }
+  if (node.type === 'googleMap') {
+    return node.url;
+  }
+  if (node.type === 'hashTag') {
+    return `[${node.raw}](${node.href})`;
+  }
+  if (node.type === 'helpfeel') {
+    return `\`? ${node.text}\``;
+  }
+  if (node.type === 'icon') {
+    return `(${node.path})`;
+  }
+  if (node.type === 'image') {
+    const img = `![](${node.src})`;
+    return node.link === '' ? img : `[${img}](${node.link})`;
+  }
+  if (node.type === 'link') {
+    const content = node.content === '' ? node.href : node.content;
+    return `[${content}](${node.href})`;
+  }
+  if (node.type === 'plain') {
+    return node.text;
+  }
+  if (node.type === 'quote') {
+    const content = node.nodes
+      .map((childNode) => nodeToMarkdown(childNode))
+      .join('\n');
+    return `> ${content}`;
+  }
+  if (node.type === 'strong') {
+    const content = node.nodes
+      .map((childNode) => nodeToMarkdown(childNode))
+      .join('\n');
+    return `<strong>${content}</strong>`;
+  }
+  if (node.type === 'strongIcon') {
+    return `<strong>(${node.path})</strong>`;
+  }
+  if (node.type === 'strongImage') {
+    return `![](${node.src})`;
   }
   return '';
 };

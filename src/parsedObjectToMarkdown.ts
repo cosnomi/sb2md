@@ -53,9 +53,6 @@ const nodeToMarkdown = (node: Node): string => {
     const content = node.content === '' ? node.href : node.content;
     return `[${content}](${node.href})`;
   }
-  if (node.type === 'plain') {
-    return node.text;
-  }
   if (node.type === 'quote') {
     const content = node.nodes
       .map((childNode) => nodeToMarkdown(childNode))
@@ -74,7 +71,8 @@ const nodeToMarkdown = (node: Node): string => {
   if (node.type === 'strongImage') {
     return `![](${node.src})`;
   }
-  return '';
+  // node.type === 'plain'
+  return node.text;
 };
 
 export const parsedObjectToMarkdown = (page: Page): string => {

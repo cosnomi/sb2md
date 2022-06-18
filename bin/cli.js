@@ -657,6 +657,6 @@ reader.on("line", (line) => {
   lines.push(line);
 });
 reader.on("close", () => {
-  const markdown = pageToMarkdown(parse(lines.join("\n")));
+  const markdown = pageToMarkdown(parse(lines.join("\n"), { hasTitle: false }));
   console.log(markdown);
 });

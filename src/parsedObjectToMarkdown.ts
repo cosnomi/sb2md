@@ -46,7 +46,7 @@ const nodeToMarkdown = (node: Node): string => {
     return `(${node.path})`;
   }
   if (node.type === 'image') {
-    const img = `![](${node.src})`;
+    const img = `![${node.src}](${node.src})`;
     return node.link === '' ? img : `[${img}](${node.link})`;
   }
   if (node.type === 'link') {
@@ -69,7 +69,7 @@ const nodeToMarkdown = (node: Node): string => {
     return `<strong>(${node.path})</strong>`;
   }
   if (node.type === 'strongImage') {
-    return `![](${node.src})`;
+    return `![${node.src}](${node.src})`;
   }
   // node.type === 'plain'
   return node.text;

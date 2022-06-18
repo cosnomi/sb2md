@@ -18,7 +18,7 @@ $ cat input.txt
  副
   いつも。つねづね。
   >「―ある所にはなくて」〈枕・二八〉
-$ cat input.txt | npx @hogashi/sb2md
+$ cat input.txt | npx @hogashi/sb2md@latest
 # 例
 [#意味](意味)
 

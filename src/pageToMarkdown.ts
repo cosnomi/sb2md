@@ -75,7 +75,7 @@ const nodeToMarkdown = (node: Node): string => {
   return node.text;
 };
 
-export const parsedObjectToMarkdown = (page: Page): string => {
+export const pageToMarkdown = (page: Page): string => {
   const lines = page.map((block) => {
     if (block.type === 'title') {
       return `# ${block.text}`;

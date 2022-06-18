@@ -1,6 +1,5 @@
 import { parse } from '@progfay/scrapbox-parser';
-
-import { parsedObjectToMarkdown } from './parsedObjectToMarkdown';
+import { pageToMarkdown } from './pageToMarkdown';
 
 process.stdin.setEncoding('utf8');
 
@@ -10,11 +9,9 @@ const reader = require('readline').createInterface({
 });
 
 reader.on('line', (line: string) => {
-  //改行ごとに"line"イベントが発火される
-  lines.push(line); //ここで、lines配列に、標準入力から渡されたデータを入れる
+  lines.push(line);
 });
 reader.on('close', () => {
-  //標準入力のストリームが終了すると呼ばれる
-  const markdown = parsedObjectToMarkdown(parse(lines.join('\n')));
+  const markdown = pageToMarkdown(parse(lines.join('\n')));
   console.log(markdown);
 });

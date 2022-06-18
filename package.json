@@ -5,9 +5,7 @@
   "repository": "ssh://git@github.com/hogashi/sb2md.git",
   "author": "hogashi <hogextend@gmail.com>",
   "license": "MIT",
-  "bin": {
-    "sb2md": "bin/cli.js"
-  },
+  "bin": "bin/cli.js",
   "scripts": {
     "build": "run-s build:esbuild build:bin",
     "build:esbuild": "esbuild --bundle --outdir=dist --platform=node src/index.ts",

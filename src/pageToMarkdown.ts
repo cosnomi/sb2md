@@ -110,7 +110,7 @@ export const pageToMarkdown = (page: Page): string => {
       ];
     }
     // block.type === 'line'
-    const text = block.nodes.map((node) => nodeToMarkdown(node));
+    const text = block.nodes.map((node) => nodeToMarkdown(node)).join('');
     if (block.indent === 0) {
       return text;
     }

@@ -637,7 +637,7 @@ ${tableRows.join("\n")}`;
         tableRows.map((line) => `${indent2}  ${line}`).join("\n")
       ];
     }
-    const text = block.nodes.map((node) => nodeToMarkdown(node));
+    const text = block.nodes.map((node) => nodeToMarkdown(node)).join("");
     if (block.indent === 0) {
       return text;
     }

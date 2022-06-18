@@ -31,7 +31,7 @@ const nodeToMarkdown = (node: Node): string => {
     return node.nodes.map((childNode) => nodeToMarkdown(childNode)).join('');
   }
   if (node.type === 'formula') {
-    return `$ ${node.formula} $`;
+    return `$$ ${node.formula} $$`;
   }
   if (node.type === 'googleMap') {
     return node.url;

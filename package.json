@@ -6,6 +6,11 @@
   "author": "hogashi <hogextend@gmail.com>",
   "license": "MIT",
   "bin": "bin/cli.js",
+  "files": [
+    "bin",
+    "src",
+    "dist"
+  ],
   "scripts": {
     "build": "esbuild --bundle --outdir=dist --platform=node src/index.ts"
   },

@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@progfay/scrapbox-parser@^7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@progfay/scrapbox-parser/-/scrapbox-parser-7.2.0.tgz#dc2563b2d01f4f17e48013eeee96b74eff36c72c"
-  integrity sha512-8b6jReJhSHVyoAkpzu4mO0hDN1qMl5j6NXhDxTd7C6AFeVjawVxudwCAM/2x0QQkI8K/L+wnaAv1w2fy0BiKSw==
+"@progfay/scrapbox-parser@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@progfay/scrapbox-parser/-/scrapbox-parser-8.0.0.tgz#2d3407a8bea39353c3444825870cec1f1edf8663"
+  integrity sha512-onE1zSlD+aRzEHAG7r8SIBaQr/VqmrWC6Wg5I85amjRJTvZZKG3ZROCyoQwznBm9WFuaJHTT3ttxdLYKOEF09g==
 
 "@types/node@^18.0.0":
   version "18.0.0"

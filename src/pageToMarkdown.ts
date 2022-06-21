@@ -71,6 +71,12 @@ const nodeToMarkdown = (node: Node): string => {
   if (node.type === 'strongImage') {
     return `![${node.src}](${node.src})`;
   }
+  if (node.type === 'numberList') {
+    const content = node.nodes
+      .map((childNode) => nodeToMarkdown(childNode))
+      .join('\n');
+    return `${node.number}. ${content}`;
+  }
   // node.type === 'plain'
   return node.text;
 };
@@ -115,6 +121,9 @@ export const pageToMarkdown = (page: Page): string => {
       return text;
     }
     const indent = '  '.repeat(block.indent - 1);
+    if (block.nodes[0].type === 'numberList') {
+      return `${indent}${text}`;
+    }
     return `${indent}- ${text}`;
   });
 

@@ -428,6 +428,32 @@ var HashTagNodeParser = createNodeParser(createHashTagNode, {
   patterns: [hashTagRegExp]
 });
 
+// node_modules/@progfay/scrapbox-parser/esm/block/node/NumberListNode.js
+var numberListRegExp = /^[0-9]+\. .*$/;
+var createNumberListNode = (raw, opts) => {
+  if (opts.context === "table") {
+    return createPlainNode(raw, opts);
+  }
+  const separatorIndex = raw.indexOf(" ");
+  const rawNumber = raw.substring(0, separatorIndex - 1);
+  const number = parseInt(rawNumber, 10);
+  const text = raw.substring(separatorIndex + 1, raw.length);
+  return [
+    {
+      type: "numberList",
+      raw,
+      rawNumber,
+      number,
+      nodes: convertToNodes(text, { ...opts, nested: true })
+    }
+  ];
+};
+var NumberListNodeParser = createNodeParser(createNumberListNode, {
+  parseOnNested: false,
+  parseOnQuoted: false,
+  patterns: [numberListRegExp]
+});
+
 // node_modules/@progfay/scrapbox-parser/esm/block/node/index.js
 var FalsyEliminator = (text, _, next) => {
   var _a;
@@ -436,7 +462,7 @@ var FalsyEliminator = (text, _, next) => {
   return (_a = next === null || next === void 0 ? void 0 : next()) !== null && _a !== void 0 ? _a : [];
 };
 var combineNodeParsers = (...parsers) => (text, opts) => parsers.reduceRight((acc, parser) => () => parser(text, opts, acc), () => PlainNodeParser(text, opts))();
-var convertToNodes = combineNodeParsers(FalsyEliminator, QuoteNodeParser, HelpfeelNodeParser, CodeNodeParser, CommandLineNodeParser, FormulaNodeParser, BlankNodeParser, DecorationNodeParser, StrongImageNodeParser, StrongIconNodeParser, StrongNodeParser, ImageNodeParser, ExternalLinkNodeParser, IconNodeParser, GoogleMapNodeParser, InternalLinkNodeParser, HashTagNodeParser);
+var convertToNodes = combineNodeParsers(FalsyEliminator, QuoteNodeParser, HelpfeelNodeParser, CodeNodeParser, CommandLineNodeParser, FormulaNodeParser, BlankNodeParser, DecorationNodeParser, StrongImageNodeParser, StrongIconNodeParser, StrongNodeParser, ImageNodeParser, ExternalLinkNodeParser, IconNodeParser, GoogleMapNodeParser, InternalLinkNodeParser, HashTagNodeParser, NumberListNodeParser);
 
 // node_modules/@progfay/scrapbox-parser/esm/block/Table.js
 var convertToTable = (pack) => {
@@ -602,6 +628,10 @@ var nodeToMarkdown = (node) => {
   if (node.type === "strongImage") {
     return `![${node.src}](${node.src})`;
   }
+  if (node.type === "numberList") {
+    const content = node.nodes.map((childNode) => nodeToMarkdown(childNode)).join("\n");
+    return `${node.number}. ${content}`;
+  }
   return node.text;
 };
 var pageToMarkdown = (page) => {
@@ -642,6 +672,9 @@ ${tableRows.join("\n")}`;
       return text;
     }
     const indent = "  ".repeat(block.indent - 1);
+    if (block.nodes[0].type === "numberList") {
+      return `${indent}${text}`;
+    }
     return `${indent}- ${text}`;
   });
   return lines2.join("\n");

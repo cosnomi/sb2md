@@ -1,6 +1,6 @@
 {
   "name": "@hogashi/sb2md",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "index.js",
   "repository": "ssh://git@github.com/hogashi/sb2md.git",
   "author": "hogashi <hogextend@gmail.com>",

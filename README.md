@@ -1,34 +1,18 @@
 # sb2md
 
-scrapbox to markdown
+This repository was forked from (hogashi/sb2md)[https://github.com/hogashi/sb2md].
+The original code transforms scrapbox to markdown, using (scrapbox-parser)[https://github.com/progfay/scrapbox-parser].
+
+Though Obsidian accepts normal-flavored markdown files as they are,
+there are a few tips that make the notes look better fit in Obsidian.
+
+For this purpose, I made a slight modifications to the original code which include
+- Updating some Markdown syntax for a better look in Obsidian (wiki link, TeX, tab indent, etc.)
+- Relink the image attachments (Links to image are replaced with links to `03_Attachments/<filename>`)
+- Rename notes so they don't cause an error in the file system (e.g., colon (:))
 
 ## Usage
 
-```console
-$ cat input.txt
-例
-#意味
-
-[https://dictionary.goo.ne.jp/word/%E4%BE%8B_%28%E3%82%8C%E3%81%84%29/ 例（れい）の意味 - goo国語辞書] から
- 名
-  1. 以前からのやり方。しきたり。ならわし。慣習。「長年の―にならう」
-  2. 過去または現在の事実で、典拠・標準とするに足る事柄。「古今に―を見ない」
-  3. 他を説明するために、同類の中から引いて示す事柄。「―を挙げて説明する」「その―に漏れない」
-  4. いつものとおりであること。「―によって話が大きい」
- 副
-  いつも。つねづね。
-  >「―ある所にはなくて」〈枕・二八〉
-$ cat input.txt | npx @hogashi/sb2md@latest
-例
-[#意味](意味)
-
-[例（れい）の意味 - goo国語辞書](https://dictionary.goo.ne.jp/word/%E4%BE%8B_%28%E3%82%8C%E3%81%84%29/) から
-- 名
-  1. 以前からのやり方。しきたり。ならわし。慣習。「長年の―にならう」
-  2. 過去または現在の事実で、典拠・標準とするに足る事柄。「古今に―を見ない」
-  3. 他を説明するために、同類の中から引いて示す事柄。「―を挙げて説明する」「その―に漏れない」
-  4. いつものとおりであること。「―によって話が大きい」
-- 副
-  - いつも。つねづね。
-  - > 「―ある所にはなくて」〈枕・二八〉
-```
+1. Download your scrapbox data as a json file
+1. Run `npm run build && node dist/index.js <your_file>.json`
+1. The converted markdown files will be saved to `output/`

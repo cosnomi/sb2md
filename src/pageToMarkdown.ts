@@ -1,6 +1,7 @@
 import type { Node, Page } from '@progfay/scrapbox-parser';
+import { escapePageName, enqueueGyazo, enqueueImage } from './util';
 
-const nodeToMarkdown = (node: Node): string => {
+function nodeToMarkdown(node: Node): string {
   if (node.type === 'blank') {
     return node.text;
   }
@@ -31,7 +32,7 @@ const nodeToMarkdown = (node: Node): string => {
     return node.nodes.map((childNode) => nodeToMarkdown(childNode)).join('');
   }
   if (node.type === 'formula') {
-    return `$$ ${node.formula} $$`;
+    return `$${node.formula}$`;
   }
   if (node.type === 'googleMap') {
     return node.url;
@@ -46,11 +47,17 @@ const nodeToMarkdown = (node: Node): string => {
     return `(${node.path})`;
   }
   if (node.type === 'image') {
-    const img = `![${node.src}](${node.src})`;
-    return node.link === '' ? img : `[${img}](${node.link})`;
+    // FIXME
+    const src = '03_Attachments/' + (node.src.startsWith('https://gyazo.com') ? enqueueGyazo(node.src) : enqueueImage(node.src));
+    return `![[${src}]]`
   }
   if (node.type === 'link') {
     const content = node.content === '' ? node.href : node.content;
+    if (content === node.href && !content.startsWith('http')) {
+      // internal wikilink
+      const pageName = escapePageName(content);
+      return `[[${pageName}]]`
+    }
     return `[${content}](${node.href})`;
   }
   if (node.type === 'quote') {
@@ -81,22 +88,22 @@ const nodeToMarkdown = (node: Node): string => {
   return node.text;
 };
 
-export const pageToMarkdown = (page: Page): string => {
+export function pageToMarkdown(page: Page): string {
   const lines = page.map((block) => {
     if (block.type === 'title') {
-      return `# ${block.text}`;
+      return null;// `# ${block.text}`;
     }
     if (block.type === 'codeBlock') {
       const headline = `\`\`\`${block.fileName}`;
       if (block.indent === 0) {
         return `${headline}\n${block.content}\n\`\`\``;
       }
-      const indent = '  '.repeat(block.indent - 1);
+      const indent = '\t'.repeat(block.indent - 1);
       return [
         `${indent}- ${headline}`,
         `${block.content}\n\`\`\``
           .split('\n')
-          .map((line) => `${indent}  ${line}`)
+          .map((line) => `${indent}\t${line}`)
           .join('\n'),
       ];
     }
@@ -109,23 +116,26 @@ export const pageToMarkdown = (page: Page): string => {
       if (block.indent === 0) {
         return `${block.fileName}\n${tableRows.join('\n')}`;
       }
-      const indent = '  '.repeat(block.indent - 1);
+      const indent = '\t'.repeat(block.indent - 1);
       return [
         `${indent}- ${block.fileName}`,
-        tableRows.map((line) => `${indent}  ${line}`).join('\n'),
+        tableRows.map((line) => `${indent}\t${line}`).join('\n'),
       ];
     }
     // block.type === 'line'
+    if (block.nodes.length == 0) {
+      return '';
+    }
     const text = block.nodes.map((node) => nodeToMarkdown(node)).join('');
     if (block.indent === 0) {
       return text;
     }
-    const indent = '  '.repeat(block.indent - 1);
+    const indent = '\t'.repeat(block.indent - 1);
     if (block.nodes[0].type === 'numberList') {
       return `${indent}${text}`;
     }
     return `${indent}- ${text}`;
   });
-
+  lines.shift();
   return lines.join('\n');
 };

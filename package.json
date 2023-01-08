@@ -15,7 +15,8 @@
     "build": "esbuild --bundle --outdir=dist --platform=node src/index.ts"
   },
   "dependencies": {
-    "@progfay/scrapbox-parser": "^8.0.0"
+    "@progfay/scrapbox-parser": "^8.0.0",
+    "image-downloader": "^4.3.0"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
